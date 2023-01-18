@@ -82,9 +82,9 @@ if [ $OSNAME != "macos" ];then
 		fi
 
 		cd /tmp && unzip /tmp/master.zip
-		mv -f /tmp/mdserver-web-master /www/server/mdserver-web
+		mv -f /tmp/mdserver-web-53f56c949bf52fe28005a281e9133aaf2549fe9a /www/server/mdserver-web
 		rm -rf /tmp/master.zip
-		rm -rf /tmp/mdserver-web-master
+		rm -rf /tmp/mdserver-web-53f56c949bf52fe28005a281e9133aaf2549fe9a
 	fi
 
 	# install acme.sh
