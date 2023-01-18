@@ -76,9 +76,9 @@ if [ $OSNAME != "macos" ];then
 
 	if [ ! -d /www/server/mdserver-web ];then
 		if [ ! -z "$cn" ];then
-			curl -sSLo /tmp/master.zip https://github.com/midoks/mdserver-web/archive/refs/tags/0.12.1.zip
+			curl -sSLo /tmp/master.zip https://github.com/midoks/mdserver-web/archive/53f56c949bf52fe28005a281e9133aaf2549fe9a.zip
 		else
-			curl -sSLo /tmp/master.zip https://github.com/midoks/mdserver-web/archive/refs/tags/0.12.1.zip
+			curl -sSLo /tmp/master.zip https://github.com/midoks/mdserver-web/archive/53f56c949bf52fe28005a281e9133aaf2549fe9a.zip
 		fi
 
 		cd /tmp && unzip /tmp/master.zip
