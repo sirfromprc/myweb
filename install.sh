@@ -85,6 +85,8 @@ if [ $OSNAME != "macos" ];then
 		mv -f /tmp/mdserver-web-53f56c949bf52fe28005a281e9133aaf2549fe9a /www/server/mdserver-web
 		rm -rf /tmp/master.zip
 		rm -rf /tmp/mdserver-web-53f56c949bf52fe28005a281e9133aaf2549fe9a
+		rm -rf /www/server/mdserver-web/route/templates/default/layout.html
+		curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
 	fi
 
 	# install acme.sh
