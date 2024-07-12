@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin:/opt/homebrew/bin
 export PATH
 # LANG=en_US.UTF-8
 is64bit=`getconf LONG_BIT`
@@ -15,39 +15,38 @@ startTime=`date +%s`
 _os=`uname`
 echo "use system: ${_os}"
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root!"
-  exit
-fi
-
 if [ ${_os} == "Darwin" ]; then
 	OSNAME='macos'
-elif grep -Eq "openSUSE" /etc/*-release; then
+elif grep -Eqi "openSUSE" /etc/*-release; then
 	OSNAME='opensuse'
 	zypper refresh
 	zypper install cron wget curl zip unzip
-elif grep -Eq "FreeBSD" /etc/*-release; then
+elif grep -Eqi "FreeBSD" /etc/*-release; then
 	OSNAME='freebsd'
-elif grep -Eqi "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
+	pkg install -y wget curl zip unzip unrar rar
+elif grep -Eqi "EulerOS" /etc/*-release || grep -Eqi "openEuler" /etc/*-release; then
+	OSNAME='euler'
+	yum install -y wget curl zip unzip tar crontabs
+elif grep -Eqi "CentOS" /etc/issue || grep -Eqi "CentOS" /etc/*-release; then
 	OSNAME='rhel'
 	yum install -y wget curl zip unzip tar crontabs
-elif grep -Eqi "Fedora" /etc/issue || grep -Eq "Fedora" /etc/*-release; then
-	OSNAME='fedora'
-	yum install -y wget curl zip unzip tar crontabs
-elif grep -Eqi "Rocky" /etc/issue || grep -Eq "Rocky" /etc/*-release; then
+elif grep -Eqi "Fedora" /etc/issue || grep -Eqi "Fedora" /etc/*-release; then
 	OSNAME='rhel'
 	yum install -y wget curl zip unzip tar crontabs
-elif grep -Eqi "AlmaLinux" /etc/issue || grep -Eq "AlmaLinux" /etc/*-release; then
+elif grep -Eqi "Rocky" /etc/issue || grep -Eqi "Rocky" /etc/*-release; then
 	OSNAME='rhel'
 	yum install -y wget curl zip unzip tar crontabs
-elif grep -Eqi "Amazon Linux" /etc/issue || grep -Eq "Amazon Linux" /etc/*-release; then
+elif grep -Eqi "AlmaLinux" /etc/issue || grep -Eqi "AlmaLinux" /etc/*-release; then
+	OSNAME='rhel'
+	yum install -y wget curl zip unzip tar crontabs
+elif grep -Eqi "Amazon Linux" /etc/issue || grep -Eqi "Amazon Linux" /etc/*-release; then
 	OSNAME='amazon'
 	yum install -y wget curl zip unzip tar crontabs
-elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/os-release; then
+elif grep -Eqi "Debian" /etc/issue || grep -Eqi "Debian" /etc/os-release; then
 	OSNAME='debian'
 	apt update -y
 	apt install -y wget curl zip unzip tar cron
-elif grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/os-release; then
+elif grep -Eqi "Ubuntu" /etc/issue || grep -Eqi "Ubuntu" /etc/os-release; then
 	OSNAME='ubuntu'
 	apt update -y
 	apt install -y wget curl zip unzip tar cron
@@ -55,13 +54,36 @@ else
 	OSNAME='unknow'
 fi
 
+if [ "$EUID" -ne 0 ] && [ "$OSNAME" != "macos" ];then 
+	echo "Please run as root!"
+ 	exit
+fi
+
+
+# HTTP_PREFIX="https://"
+# LOCAL_ADDR=common
+# ping  -c 1 github.com > /dev/null 2>&1
+# if [ "$?" != "0" ];then
+# 	LOCAL_ADDR=cn
+# 	HTTP_PREFIX="https://mirror.ghproxy.com/"
+# fi
+
+HTTP_PREFIX="https://"
+LOCAL_ADDR=common
+cn=$(curl -fsSL -m 10 -s http://ipinfo.io/json | grep "\"country\": \"CN\"")
+if [ ! -z "$cn" ] || [ "$?" == "0" ] ;then
+	LOCAL_ADDR=cn
+    HTTP_PREFIX="https://mirror.ghproxy.com/"
+fi
+
+echo "local:${LOCAL_ADDR}"
 
 if [ $OSNAME != "macos" ];then
 	if id www &> /dev/null ;then 
 	    echo ""
 	else
 	    groupadd www
-		useradd -g www -s /bin/bash www
+		useradd -g www -s /usr/sbin/nologin www
 	fi
 
 	mkdir -p /www/server
@@ -71,32 +93,36 @@ if [ $OSNAME != "macos" ];then
 	mkdir -p /www/backup/site
 
 	# https://cdn.jsdelivr.net/gh/midoks/mdserver-web@latest/scripts/install.sh
-
-	cn=$(curl -fsSL -m 10 http://ipinfo.io/json | grep "\"country\": \"CN\"")
-
 	if [ ! -d /www/server/mdserver-web ];then
-		if [ ! -z "$cn" ];then
-			curl -sSLo /tmp/master.zip https://gitee.com/midoks/mdserver-web/repository/archive/master.zip
+		if [ "$LOCAL_ADDR" == "common" ];then
+			curl --insecure -sSLo /tmp/master.zip ${HTTP_PREFIX}github.com/midoks/mdserver-web/archive/refs/heads/master.zip
+			cd /tmp && unzip /tmp/master.zip
+			mv -f /tmp/mdserver-web-master /www/server/mdserver-web
+			rm -rf /tmp/master.zip
+			rm -rf /tmp/mdserver-web-master
+			rm -rf /www/server/mdserver-web/route/templates/default/layout.html
+			curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
 		else
-			curl -sSLo /tmp/master.zip https://codeload.github.com/midoks/mdserver-web/zip/master
+			# curl --insecure -sSLo /tmp/master.zip https://code.midoks.icu/midoks/mdserver-web/archive/master.zip
+			wget --no-check-certificate -O /tmp/master.zip https://code.midoks.icu/midoks/mdserver-web/archive/master.zip
+			cd /tmp && unzip /tmp/master.zip
+			mv -f /tmp/mdserver-web /www/server/mdserver-web
+			rm -rf /tmp/master.zip
+			rm -rf /tmp/mdserver-web
+			rm -rf /www/server/mdserver-web/route/templates/default/layout.html
+			curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
 		fi
 
-		cd /tmp && unzip /tmp/master.zip
-		mv -f /tmp/mdserver-web-master /www/server/mdserver-web
-		rm -rf /tmp/master.zip
-		rm -rf /tmp/mdserver-web-master
-		rm -rf /www/server/mdserver-web/route/templates/default/layout.html
-		curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
+		
 	fi
 
 	# install acme.sh
 	if [ ! -d /root/.acme.sh ];then
-	    if [ ! -z "$cn" ];then
-	        curl -sSL -o /tmp/acme.tar.gz https://ghproxy.com/github.com/acmesh-official/acme.sh/archive/master.tar.gz
+	    if [ "$LOCAL_ADDR" != "common" ];then
+	        curl --insecure -sSLo /tmp/acme.tar.gz https://gitee.com/neilpang/acme.sh/repository/archive/master.tar.gz
 	        tar xvzf /tmp/acme.tar.gz -C /tmp
 	        cd /tmp/acme.sh-master
 	        bash acme.sh install
-	        cd -
 	    fi
 
 	    if [ ! -d /root/.acme.sh ];then
@@ -105,10 +131,17 @@ if [ $OSNAME != "macos" ];then
 	fi
 fi
 
-
-
 echo "use system version: ${OSNAME}"
-cd /www/server/mdserver-web && bash scripts/install/${OSNAME}.sh
+if [ "${OSNAME}" == "macos" ];then
+	curl --insecure -fsSL https://code.midoks.icu/midoks/mdserver-web/raw/branch/master/scripts/install/macos.sh | bash
+else
+	cd /www/server/mdserver-web && bash scripts/install/${OSNAME}.sh
+fi
+
+if [ "${OSNAME}" == "macos" ];then
+	echo "macos end"
+	exit 0
+fi
 
 cd /www/server/mdserver-web && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
