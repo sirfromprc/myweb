@@ -102,8 +102,8 @@ if [ $OSNAME != "macos" ];then
 			rm -rf /tmp/mdserver-web-master
 			rm -rf /www/server/mdserver-web/route/templates/default/layout.html
 			curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
-   			wget https://github.com/FRiCKLE/ngx_cache_purge/archive/2.3.tar.gz && tar -zxvf 2.3.tar.gz -C /www/server/source/
-   			sed -i '/--with-http_stub_status_module/a \\t--add-module=\/www\/server\/source\/ngx_cache_purge-2.3 \\' /www/server/mdserver-web/plugins/openresty/install.sh
+   			curl -o 2.3.tar.gz -L https://github.com/FRiCKLE/ngx_cache_purge/archive/2.3.tar.gz && tar -zxvf 2.3.tar.gz -C /www/server/source/
+   			sed -i '/--with-http_stub_status_module/a \\t--add-module=\/www\/server\/source\/ngx_cache_purge-2.3 \\' /www/server/mdserver-web/plugins/openresty/versions/1.25.3/install.sh
 		else
 			# curl --insecure -sSLo /tmp/master.zip https://code.midoks.icu/midoks/mdserver-web/archive/master.zip
 			wget --no-check-certificate -O /tmp/master.zip https://code.midoks.icu/midoks/mdserver-web/archive/master.zip
@@ -113,8 +113,8 @@ if [ $OSNAME != "macos" ];then
 			rm -rf /tmp/mdserver-web
 			rm -rf /www/server/mdserver-web/route/templates/default/layout.html
 			curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
-   			wget https://github.com/FRiCKLE/ngx_cache_purge/archive/2.3.tar.gz && tar -zxvf 2.3.tar.gz -C /www/server/source/
-   			sed -i '/--with-http_stub_status_module/a \\t--add-module=\/www\/server\/source\/ngx_cache_purge-2.3 \\' /www/server/mdserver-web/plugins/openresty/install.sh
+   			curl -o 2.3.tar.gz -L https://github.com/FRiCKLE/ngx_cache_purge/archive/2.3.tar.gz && tar -zxvf 2.3.tar.gz -C /www/server/source/
+   			sed -i '/--with-http_stub_status_module/a \\t--add-module=\/www\/server\/source\/ngx_cache_purge-2.3 \\' /www/server/mdserver-web/plugins/openresty/versions/1.25.3/install.sh
 		fi
 
 		
