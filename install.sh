@@ -166,6 +166,8 @@ sed -i '/authentication_policy/i log_timestamps = SYSTEM' /www/server/mdserver-w
 sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
 sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
 
+echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+sysctl -p
 
 cd /www/server/mdserver-web && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
