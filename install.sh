@@ -169,6 +169,8 @@ sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-apt
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 sysctl -p
 
+timedatectl set-timezone Asia/Shanghai
+
 cd /www/server/mdserver-web && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
 n=0
