@@ -160,6 +160,12 @@ sed -i '/bash memcached\.sh install/a \ \tcd \${rootPath}\/plugins\/php\/version
 mv /www/server/mdserver-web/plugins/openresty/conf/nginx.conf /www/server/mdserver-web/plugins/openresty/conf/nginx_origin.conf
 curl -sSLo /www/server/mdserver-web/plugins/openresty/conf/nginx.conf https://raw.githubusercontent.com/sirfromprc/myweb/main/nginx.conf
 
+sed -i '/authentication_policy/i skip-log-bin' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
+sed -i '/authentication_policy/i mysqlx=0' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
+sed -i '/authentication_policy/i log_timestamps = SYSTEM' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
+sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
+sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
+
 
 cd /www/server/mdserver-web && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
