@@ -153,14 +153,13 @@ cd /www/server/source/ngx_brotli && git submodule update --init
 sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_brotli \\' /www/server/mdserver-web/plugins/openresty/versions/1.25.3/install.sh
 
 cd
-sed -i '/tcp_nodelay on/i \ \t#启用brotli压缩' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
-sed -i '/tcp_nodelay on/i \ \tbrotli on;' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
-sed -i '/tcp_nodelay on/i \ \tbrotli_static on;' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
-sed -i '/tcp_nodelay on/i \ \tbrotli_comp_level 6;' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
-sed -i '/tcp_nodelay on/i \ \tbrotli_buffers 16 8k;' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
-sed -i '/tcp_nodelay on/i \ \tbrotli_min_length 20;' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
-sed -i '/tcp_nodelay on/i \ \tbrotli_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript image/svg+xml;' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
-sed -i '/tcp_nodelay on/i \ \t' /www/server/mdserver-web/plugins/openresty/conf/nginx.conf
+sed -i '/bash memcached\.sh install/a \ \tcd \${rootPath}\/plugins\/php\/versions\/common \&\& bash opcache\.sh install \${type}' /www/server/mdserver-web/plugins/php/install.sh
+sed -i '/bash memcached\.sh install/a \ \tcd \${rootPath}\/plugins\/php\/versions\/common \&\& bash igbinary\.sh install \${type}' /www/server/mdserver-web/plugins/php/install.sh
+sed -i '/bash memcached\.sh install/a \ \tcd \${rootPath}\/plugins\/php\/versions\/common \&\& bash imagemagick\.sh install \${type}' /www/server/mdserver-web/plugins/php/install.sh
+sed -i '/bash memcached\.sh install/a \ \tcd \${rootPath}\/plugins\/php\/versions\/common \&\& bash fileinfo\.sh install \${type}' /www/server/mdserver-web/plugins/php/install.sh
+mv /www/server/mdserver-web/plugins/openresty/conf/nginx.conf /www/server/mdserver-web/plugins/openresty/conf/nginx_origin.conf
+curl -sSLo /www/server/mdserver-web/plugins/openresty/conf/nginx.conf https://raw.githubusercontent.com/sirfromprc/myweb/main/nginx.conf
+
 
 cd /www/server/mdserver-web && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
