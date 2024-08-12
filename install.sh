@@ -172,6 +172,7 @@ sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plug
 # redis
 sed -i 's/LIBV=5.3.7/LIBV=6.0.2/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
 sysctl -p
 
 timedatectl set-timezone Asia/Shanghai
