@@ -166,6 +166,10 @@ sed -i '/authentication_policy/i log_timestamps = SYSTEM' /www/server/mdserver-w
 sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
 sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
 
+# support caching_sha2_password,php8.0 unuseful
+sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plugins/php/versions/83/install.sh
+
+# redis
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 sysctl -p
 
