@@ -186,6 +186,7 @@ root hard nofile 65536
 EOF
 
 sed -i '/Restart=on-failure/a LimitNOFILE=65535' /www/server/mdserver-web/plugins/openresty/init.d/openresty.service.tpl
+sed -i '/Restart=on-failure/a LimitNOFILE=65535' /www/server/mdserver-web/plugins/redis/init.d/redis.service.tpl
 
 timedatectl set-timezone Asia/Shanghai
 
