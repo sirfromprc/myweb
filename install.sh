@@ -175,6 +175,18 @@ echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
 sysctl -p
 
+# limits
+cat >> /etc/security/limits.conf <<EOF
+* soft nofile 65536
+* hard nofile 65536
+root soft nofile 65536
+root hard nofile 65536
+* hard nproc 65000
+* soft nproc 65000
+EOF
+
+sed -i '/Restart=on-failure/a LimitNOFILE=65535' /www/server/mdserver-web/plugins/openresty/init.d/openresty.service.tpl
+
 timedatectl set-timezone Asia/Shanghai
 
 cd /www/server/mdserver-web && bash cli.sh start
