@@ -170,6 +170,7 @@ sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-apt
 sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plugins/php/versions/83/install.sh
 
 # redis
+sed -i 's/LIBV=5.3.7/LIBV=6.0.2/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 sysctl -p
 
