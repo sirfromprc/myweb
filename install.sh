@@ -175,6 +175,12 @@ sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plug
 sed -i 's/LIBV=5.3.7/LIBV=6.0.2/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
+# disable ipv6 ra
+echo "net.ipv6.conf.all.accept_ra = 0" >> /etc/sysctl.conf
+echo "net.ipv6.conf.ens3.autoconf = 0" >> /etc/sysctl.conf
+echo "net.ipv6.conf.ens3.accept_ra = 0" >> /etc/sysctl.conf
+echo "net.ipv6.conf.all.autoconf = 0" >> /etc/sysctl.conf
+
 sysctl -p
 
 # limits
