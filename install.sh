@@ -171,6 +171,9 @@ sed -i 's/(rdata.Innodb_buffer_pool_read_requests \/ (rdata.Innodb_buffer_pool_r
 # support caching_sha2_password,php8.0 unuseful
 sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plugins/php/versions/83/install.sh
 
+# for php83
+sed -i 's/LIBV=3.2.7/LIBV=3.2.16/' /www/server/mdserver-web/plugins/php/versions/common/igbinary.sh
+
 # redis
 sed -i 's/LIBV=5.3.7/LIBV=6.0.2/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
