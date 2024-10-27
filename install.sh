@@ -185,6 +185,7 @@ echo "net.ipv6.conf.ens3.accept_ra = 0" >> /etc/sysctl.conf
 echo "net.ipv6.conf.all.autoconf = 0" >> /etc/sysctl.conf
 
 sysctl -p
+systemctl restart networking.service
 
 # limits
 cat >> /etc/security/limits.conf <<EOF
