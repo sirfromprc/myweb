@@ -192,6 +192,15 @@ sed -i '/Restart=on-failure/a LimitNOFILE=65535' /www/server/mdserver-web/plugin
 
 timedatectl set-timezone Asia/Shanghai
 
+# wordpress 
+cat > /www/server/mdserver-web/rewrite/nginx/wordpress.conf <<EOF
+location / {
+    try_files \$uri \$uri/ /index.php?\$args;
+} 
+
+rewrite /wp-admin\$ \$scheme://\$host\$uri/ permanent;
+EOF
+
 cd /www/server/mdserver-web && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
 n=0
