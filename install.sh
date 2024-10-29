@@ -175,7 +175,7 @@ sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plug
 sed -i 's/LIBV=3.2.7/LIBV=3.2.16/' /www/server/mdserver-web/plugins/php/versions/common/igbinary.sh
 
 # redis
-sed -i 's/LIBV=5.3.7/LIBV=6.0.2/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
+sed -i 's/LIBV=5.3.7/LIBV=6.1.0/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
 # disable ipv6 ra
