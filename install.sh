@@ -176,7 +176,7 @@ sed -i 's/LIBV=3.2.7/LIBV=3.2.16/' /www/server/mdserver-web/plugins/php/versions
 
 # redis
 sed -i 's/LIBV=5.3.7/LIBV=6.1.0/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
-sed -i 's/bin\/php-config $OPTIONS/bin\/php-config $OPTIONS  --enable-redis-igbinary --enable-redis-zstd/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
+sed -i 's/bin\/php-config $OPTIONS/bin\/php-config $OPTIONS  --enable-redis-igbinary --enable-redis-zstd --enable-redis-lzf/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
