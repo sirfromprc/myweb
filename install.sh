@@ -162,13 +162,13 @@ sed -i '/bash memcached\.sh install/a \ \tcd \${rootPath}\/plugins\/php\/version
 mv /www/server/mdserver-web/plugins/openresty/conf/nginx.conf /www/server/mdserver-web/plugins/openresty/conf/nginx_origin.conf
 curl -sSLo /www/server/mdserver-web/plugins/openresty/conf/nginx.conf https://raw.githubusercontent.com/sirfromprc/myweb/main/nginx.conf
 
-sed -i '/authentication_policy/i skip-log-bin' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
-sed -i '/authentication_policy/i mysqlx=0' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
-sed -i '/authentication_policy/i log_timestamps = SYSTEM' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
-sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
-sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
-sed -i 's/log-bin=mysql-bin/#log-bin=mysql-bin/' /www/server/mdserver-web/plugins/mysql-apt/conf/my8.0.cnf
-sed -i 's/(rdata.Innodb_buffer_pool_read_requests \/ (rdata.Innodb_buffer_pool_read_requests+rdata.Innodb_buffer_pool_reads))/((1 - (rdata.Innodb_buffer_pool_reads \/ rdata.Innodb_buffer_pool_read_requests)) * 100)/' /www/server/mdserver-web/plugins/mysql-apt/js/mysql-apt.js
+sed -i '/authentication_policy/i skip-log-bin' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
+sed -i '/authentication_policy/i mysqlx=0' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
+sed -i '/authentication_policy/i log_timestamps = SYSTEM' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
+sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
+sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
+sed -i 's/log-bin=mysql-bin/#log-bin=mysql-bin/' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
+sed -i 's/(rdata.Innodb_buffer_pool_read_requests \/ (rdata.Innodb_buffer_pool_read_requests+rdata.Innodb_buffer_pool_reads))/((1 - (rdata.Innodb_buffer_pool_reads \/ rdata.Innodb_buffer_pool_read_requests)) * 100)/' /www/server/mdserver-web/plugins/mysql-community/js/mysql-apt.js
 
 # support caching_sha2_password,php8.0 unuseful
 sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plugins/php/versions/83/install.sh
@@ -182,11 +182,6 @@ sed -i 's/bin\/php-config $OPTIONS/bin\/php-config $OPTIONS  --enable-redis-igbi
 
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
-# disable ipv6 ra
-echo "net.ipv6.conf.all.accept_ra = 0" >> /etc/sysctl.conf
-echo "net.ipv6.conf.ens3.autoconf = 0" >> /etc/sysctl.conf
-echo "net.ipv6.conf.ens3.accept_ra = 0" >> /etc/sysctl.conf
-echo "net.ipv6.conf.all.autoconf = 0" >> /etc/sysctl.conf
 
 sysctl -p
 systemctl restart networking.service
