@@ -100,8 +100,8 @@ if [ $OSNAME != "macos" ];then
 			mv -f /tmp/mdserver-web-master /www/server/mdserver-web
 			rm -rf /tmp/master.zip
 			rm -rf /tmp/mdserver-web-master
-			rm -rf /www/server/mdserver-web/route/templates/default/layout.html
-			curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html 			
+			rm -rf /www/server/mdserver-web/web/templates/default/layout.html
+			curl -sSLo /www/server/mdserver-web/web/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html 			
 		else
 			# curl --insecure -sSLo /tmp/master.zip https://code.midoks.icu/midoks/mdserver-web/archive/master.zip
 			wget --no-check-certificate -O /tmp/master.zip https://code.midoks.icu/midoks/mdserver-web/archive/master.zip
@@ -109,7 +109,7 @@ if [ $OSNAME != "macos" ];then
 			mv -f /tmp/mdserver-web /www/server/mdserver-web
 			rm -rf /tmp/master.zip
 			rm -rf /tmp/mdserver-web
-			rm -rf /www/server/mdserver-web/route/templates/default/layout.html
+			rm -rf /www/server/mdserver-web/web/templates/default/layout.html
 			curl -sSLo /www/server/mdserver-web/web/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
 		fi
 
