@@ -168,7 +168,7 @@ sed -i '/authentication_policy/i log_timestamps = SYSTEM' /www/server/mdserver-w
 sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
 sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
 sed -i 's/log-bin=mysql-bin/#log-bin=mysql-bin/' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
-sed -i 's/(rdata.Innodb_buffer_pool_read_requests \/ (rdata.Innodb_buffer_pool_read_requests+rdata.Innodb_buffer_pool_reads))/((1 - (rdata.Innodb_buffer_pool_reads \/ rdata.Innodb_buffer_pool_read_requests)) * 100)/' /www/server/mdserver-web/plugins/mysql-community/js/mysql-apt.js
+sed -i 's/(rdata.Innodb_buffer_pool_read_requests \/ (rdata.Innodb_buffer_pool_read_requests+rdata.Innodb_buffer_pool_reads))/((1 - (rdata.Innodb_buffer_pool_reads \/ rdata.Innodb_buffer_pool_read_requests)) * 100)/' /www/server/mdserver-web/plugins/mysql-community/js/mysql-community.js
 
 # support caching_sha2_password,php8.0 unuseful
 sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plugins/php/versions/83/install.sh
