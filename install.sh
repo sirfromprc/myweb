@@ -110,7 +110,7 @@ if [ $OSNAME != "macos" ];then
 			rm -rf /tmp/master.zip
 			rm -rf /tmp/mdserver-web
 			rm -rf /www/server/mdserver-web/route/templates/default/layout.html
-			curl -sSLo /www/server/mdserver-web/route/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
+			curl -sSLo /www/server/mdserver-web/web/templates/default/layout.html https://raw.githubusercontent.com/sirfromprc/myweb/main/layout.html
 		fi
 
 		
