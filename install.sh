@@ -202,7 +202,7 @@ sed -i '/Restart=on-failure/a LimitNOFILE=65535' /www/server/mdserver-web/plugin
 timedatectl set-timezone Asia/Shanghai
 
 # wordpress 
-cat > /www/server/mdserver-web/rewrite/nginx/wordpress.conf <<EOF
+cat > /www/server/mdserver-web/web/misc/nginx/rewrite/wordpress.conf <<EOF
 location / {
     try_files \$uri \$uri/ /index.php?\$args;
 } 
