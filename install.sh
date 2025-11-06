@@ -291,6 +291,23 @@ sed -i 's/(rdata.Innodb_buffer_pool_read_requests \/ (rdata.Innodb_buffer_pool_r
 # 关闭面板自动更新
 sed -i 's/init_auto_update()/# init_auto_update()/' /www/server/mdserver-web/web/admin/setup/__init__.py
 
+# Cloudflare证书申请修改为必要的值
+sed -i "/var fields_html = ''/a \ \t}" /www/server/mdserver-web/web/static/app/site.js
+sed -i "/var fields_html = ''/a \ \t\thelp_list += \"<li>除 CF_Token 和 CF_Zone_ID 外，其他可以随便填</li>\"; " /www/server/mdserver-web/web/static/app/site.js
+sed -i "/var fields_html = ''/a \ \tif (data['name'] === 'dns_cf') { " /www/server/mdserver-web/web/static/app/site.js	
+sed -i "/var fields_html = ''/a \ \tvar help_list = \`<li>使用【\${data['title']}】的API接口自动解析申请SSL</li>\`;" /www/server/mdserver-web/web/static/app/site.js
+sed -i 's|<li>使用【"+data\['"'"'title'"'"'\]+"】的API接口自动解析申请SSL</li>|"+help_list+"|' /www/server/mdserver-web/web/static/app/site.js
+
+sed -i 's/CF_Key:CF_Email:CF_Token:CF_Account_ID:CF_Zone_ID/CF_Token:CF_Zone_ID/' /www/server/mdserver-web/web/utils/site.py
+####
+#	var help_list = `<li>使用【${data['title']}】的API接口自动解析申请SSL</li>`;
+#	if (data['name'] === 'dns_cf') { 
+#		help_list += "<li>test</li>";
+#	}
+	
+#	"+help_list+"\
+####
+
 # support caching_sha2_password,php8.0 unuseful
 sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plugins/php/versions/83/install.sh
 
