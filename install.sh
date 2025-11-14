@@ -337,6 +337,10 @@ EOF
 sed -i '/Restart=on-failure/a LimitNOFILE=65535' /www/server/mdserver-web/plugins/openresty/init.d/openresty.service.tpl
 sed -i '/Restart=on-failure/a LimitNOFILE=65535' /www/server/mdserver-web/plugins/redis/init.d/redis.service.tpl
 
+# 自定义日志切割
+sed -i '/split_logs(errOldFileName, save)/a\    split_logs("/www/wwwlogs/airport.log", save)' /www/server/mdserver-web/scripts/logs_backup.py
+
+# 时区设为中国
 timedatectl set-timezone Asia/Shanghai
 
 # wordpress 
