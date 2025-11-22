@@ -318,10 +318,20 @@ sed -i '/--enable-mysqlnd/a \ \t--with-openssl \\' /www/server/mdserver-web/plug
 #sed -i 's/LIBV=5.3.7/LIBV=6.1.0/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 sed -i 's/bin\/php-config $OPTIONS/bin\/php-config $OPTIONS  --enable-redis-igbinary --enable-redis-zstd --enable-redis-lzf/' /www/server/mdserver-web/plugins/php/versions/common/redis.sh
 
-echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
-echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
+if grep -q "Debian GNU/Linux 13" /etc/os-release 2>/dev/null; then
+    # Debian 13 用 sysctl.d 写入
+    bash -c 'echo "
+# 20-redis set
+vm.overcommit_memory = 1
+fs.nr_open = 10000000
+" > /etc/sysctl.d/20-redis.conf'
+    sysctl -p /etc/sysctl.d/20-redis.conf
+else
+    echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+    echo "fs.nr_open = 10000000" >> /etc/sysctl.conf
+    sysctl -p
+fi
 
-sysctl -p
 systemctl restart networking.service
 
 # limits
