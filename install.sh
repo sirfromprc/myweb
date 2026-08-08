@@ -265,12 +265,14 @@ cd /tmp
 curl -o 2.3.tar.gz -L https://github.com/FRiCKLE/ngx_cache_purge/archive/2.3.tar.gz && tar -zxvf 2.3.tar.gz -C /www/server/source/
 sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_cache_purge-2.3 \\' /www/server/mdserver-web/plugins/openresty/versions/1.25.3/install.sh
 sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_cache_purge-2.3 \\' /www/server/mdserver-web/plugins/openresty/versions/1.27.1/install.sh
+sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_cache_purge-2.3 \\' /www/server/mdserver-web/plugins/openresty/versions/1.31.1/install.sh
 
-apt install libbrotli-dev -y
-git clone https://github.com/google/ngx_brotli /www/server/source/ngx_brotli
-cd /www/server/source/ngx_brotli && git submodule update --init
-sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_brotli \\' /www/server/mdserver-web/plugins/openresty/versions/1.25.3/install.sh
-sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_brotli \\' /www/server/mdserver-web/plugins/openresty/versions/1.27.1/install.sh
+#目前里面有https://github.com/wxx9248/ngx_brotli.git 这家的了
+#apt install libbrotli-dev -y
+#git clone https://github.com/google/ngx_brotli /www/server/source/ngx_brotli
+#cd /www/server/source/ngx_brotli && git submodule update --init
+#sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_brotli \\' /www/server/mdserver-web/plugins/openresty/versions/1.25.3/install.sh
+#sed -i '/--with-http_stub_status_module/a \ \t--add-module=\/www\/server\/source\/ngx_brotli \\' /www/server/mdserver-web/plugins/openresty/versions/1.27.1/install.sh
 
 cd
 sed -i '/bash memcached\.sh install/a \ \tcd \${rootPath}\/plugins\/php\/versions\/common \&\& bash opcache\.sh install \${type}' /www/server/mdserver-web/plugins/php/install.sh
@@ -287,6 +289,13 @@ sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-w
 sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
 sed -i 's/log-bin=mysql-bin/#log-bin=mysql-bin/' /www/server/mdserver-web/plugins/mysql-community/conf/my8.0.cnf
 sed -i 's/(rdata.Innodb_buffer_pool_read_requests \/ (rdata.Innodb_buffer_pool_read_requests+rdata.Innodb_buffer_pool_reads))/((1 - (rdata.Innodb_buffer_pool_reads \/ rdata.Innodb_buffer_pool_read_requests)) * 100)/' /www/server/mdserver-web/plugins/mysql-community/js/mysql-community.js
+
+sed -i '/authentication_policy/i skip-log-bin' /www/server/mdserver-web/plugins/mysql-community/conf/my8.4.cnf
+sed -i '/authentication_policy/i mysqlx=0' /www/server/mdserver-web/plugins/mysql-community/conf/my8.4.cnf
+sed -i '/authentication_policy/i log_timestamps = SYSTEM' /www/server/mdserver-web/plugins/mysql-community/conf/my8.4.cnf
+sed -i '/authentication_policy/i log_error_verbosity = 1' /www/server/mdserver-web/plugins/mysql-community/conf/my8.4.cnf
+sed -i '/authentication_policy/i \\t' /www/server/mdserver-web/plugins/mysql-community/conf/my8.4.cnf
+sed -i 's/log-bin=mysql-bin/#log-bin=mysql-bin/' /www/server/mdserver-web/plugins/mysql-community/conf/my8.4.cnf
 
 # 关闭面板自动更新
 sed -i 's/init_auto_update()/# init_auto_update()/' /www/server/mdserver-web/web/admin/setup/__init__.py
